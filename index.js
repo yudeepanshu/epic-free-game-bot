@@ -9,6 +9,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cronInterval = process.env.CRON_INTERVAL || "30 19 * * *"; // default: every day at 1:00 AM IST
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK; // set in .env
 const CACHE_FILE = "sentGames.json";
 
@@ -113,8 +114,7 @@ async function fetchEpicFreeGames() {
 
 // -------------------- Scheduler --------------------
 
-// Run every day at 12 AM UTC
-cron.schedule("0 0 * * *", () => {
+cron.schedule(cronInterval, () => {
   console.log("⏰ Checking Epic Free Games...");
   fetchEpicFreeGames();
 });
